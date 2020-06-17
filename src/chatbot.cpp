@@ -49,7 +49,7 @@ ChatBot::~ChatBot()
 ChatBot::ChatBot(const ChatBot& source)
 {
     std::cout << "ChatBot Copy Constructor" << std::endl;
-    _image = source._image;
+    memcpy((void*)_image, (void*)source._image, sizeof(wxBitmap));
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
 
@@ -75,7 +75,7 @@ ChatBot &ChatBot::operator=(const ChatBot& source)
 ChatBot::ChatBot(ChatBot&& source)
 {
     std::cout << "ChatBot Move Constructor" << std::endl;
-    memcpy((void*)_image, (void*)source._image, sizeof(wxBitmap));
+    _image = source._image;
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
 
