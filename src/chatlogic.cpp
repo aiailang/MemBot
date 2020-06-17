@@ -164,7 +164,6 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             std::unique_ptr<GraphEdge> edge(new GraphEdge(id));
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
-                            _edges.push_back(edge.get());
 
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
@@ -217,7 +216,6 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // create instance of chatbot
-    fprintf(stderr, "LoadAnswerGraphFromFile\n");
     ChatBot chatBot("../images/chatbot.png");
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI

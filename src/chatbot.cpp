@@ -8,6 +8,7 @@
 #include "graphedge.h"
 #include "chatbot.h"
 
+
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
@@ -51,15 +52,21 @@ ChatBot::ChatBot(const ChatBot& source)
     _image = source._image;
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
+
+    // set chatBot in chatLogic
+    _chatLogic->SetChatbotHandle(this);
 }
 
 // copy assignment operator
 ChatBot &ChatBot::operator=(const ChatBot& source)
 {
     std::cout << "ChatBot Copy Assignment Operator" << std::endl;
-    _image = source._image;
+    memcpy((void*)_image, (void*)source._image, sizeof(wxBitmap));
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
+
+    // set chatBot in chatLogic
+    _chatLogic->SetChatbotHandle(this);
 
     return *this;
 }
@@ -68,9 +75,12 @@ ChatBot &ChatBot::operator=(const ChatBot& source)
 ChatBot::ChatBot(ChatBot&& source)
 {
     std::cout << "ChatBot Move Constructor" << std::endl;
-    _image = source._image;
+    memcpy((void*)_image, (void*)source._image, sizeof(wxBitmap));
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
+
+    // set chatBot in chatLogic
+    _chatLogic->SetChatbotHandle(this);
 
     source._image = nullptr;
     source._chatLogic = nullptr;
@@ -86,6 +96,9 @@ ChatBot &ChatBot::operator=(ChatBot&& source)
     _image = source._image;
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
+
+    // set chatBot in chatLogic
+    _chatLogic->SetChatbotHandle(this);
 
     source._image = nullptr;
     source._chatLogic = nullptr;
@@ -139,9 +152,6 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
-
-    // set chatBot in chatLogic
-    _chatLogic->SetChatbotHandle(this);
 
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
